@@ -14,4 +14,6 @@ public interface StudentDao {
 
 	public Boolean addStudent(Student student);
 
+	public Boolean updateStudent(Student student);
+
 }
