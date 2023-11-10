@@ -14,4 +14,6 @@ public interface CourseDao {
 
 	public Boolean addCourse(Course course);
 
+	public Boolean updateCourse(Course course);
+
 }
