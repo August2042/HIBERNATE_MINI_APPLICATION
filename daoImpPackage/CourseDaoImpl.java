@@ -1,14 +1,20 @@
 package daoImpPackage;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory; // Import the correct SessionFactory
 
 import daoPackage.CourseDao;
 import hibernateConfigurationPackage.HibernateConfiguration;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
 import javaBeans.Course;
+import javaBeans.Student;
+import org.hibernate.query.Query;
 
 public class CourseDaoImpl implements CourseDao {
 
@@ -70,8 +76,46 @@ public class CourseDaoImpl implements CourseDao {
 
 	@Override
 	public List<Course> getCourse() {
+		List<Course> courses = new ArrayList<>();
+		SessionFactory sessionFactory = HibernateConfiguration.getInstance().getSessionFactory();
+		Session session = sessionFactory.openSession();
 
-		return null;
+		try {
+			// Use HQL (Hibernate Query Language) to retrieve all students
+			Query<Course> query = session.createQuery("FROM Course", Course.class);
+			courses = query.list();
+		} catch (HibernateException e) {
+			// Handle Hibernate exceptions
+			e.printStackTrace();
+		} finally {
+			// Close the session in a finally block to ensure it gets closed
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+
+		return courses;
 	}
 
+	@Override
+	public Boolean updateCourse(Course course) {
+		SessionFactory sessionFactory = HibernateConfiguration.getInstance().getSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		try {
+			session.beginTransaction();
+			session.update(course);
+			session.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			if (session.getTransaction() != null) {
+				session.getTransaction().rollback();
+			}
+			e.printStackTrace(); // You might want to handle the exception more gracefully in a real application
+			return false;
+		} finally {
+			session.close();
+		}
+
+	}
 }
