@@ -7,6 +7,7 @@ import javax.validation.groups.Default;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import java.util.List;
 
 import daoImpPackage.CourseDaoImpl;
 import daoImpPackage.StudentDaoImpl;
@@ -31,7 +32,7 @@ public class App {
 			int option = sc.nextInt();
 
 			switch (option) {
-			
+
 			case 1: {
 
 				/* This is for STUDENT */
@@ -39,11 +40,13 @@ public class App {
 				System.out.println("-----------------------------------------------------");
 				System.out.println("1>. Add Student");
 				System.out.println("2>. Delete Student");
-				System.out.println("3>. Get Student");
+				System.out.println("3>. Get Student by ID");
+				System.out.println("4>. Update Student");
+				System.out.println("5>. Get Student List");
+
 				System.out.println("Enter the above choice :");
 				int option1 = sc.nextInt();
 				sc.nextLine();
-				
 
 				switch (option1) {
 				case 1: {
@@ -118,6 +121,76 @@ public class App {
 
 					break;
 				}
+				case 4: {
+					System.out.print("Enter the student id for updating student details : ");
+					Long s_id = sc.nextLong();
+					sc.nextLine();
+
+					StudentDao studentDao = new StudentDaoImpl();
+					Student existingStudent = studentDao.getStudent(s_id);
+
+					if (existingStudent != null) {
+						System.out.println("Enter updated information for student with ID " + s_id + ":");
+
+						System.out.print("Enter the updated student name : ");
+						String updatedName = sc.nextLine();
+						existingStudent.setStudent_name(updatedName);
+
+						System.out.print("Enter the updated gender : ");
+						String updatedGender = sc.nextLine();
+						existingStudent.setStudent_gender(updatedGender);
+
+						System.out.print("Enter the updated student email : ");
+						String updatedEmail = sc.nextLine();
+						existingStudent.setStudent_email(updatedEmail);
+
+						System.out.print("Enter the updated student mobile no. : ");
+						String updatedMobNo = sc.nextLine();
+						existingStudent.setStudent_mobileNo(updatedMobNo);
+
+						System.out.print("Enter the updated student address : ");
+						String updatedAddress = sc.nextLine();
+						existingStudent.setStudent_address(updatedAddress);
+
+						System.out.print("Enter the updated student age : ");
+						String updatedAge = sc.nextLine();
+						existingStudent.setStudent_age(updatedAge);
+
+						// Call the update method
+						if (studentDao.updateStudent(existingStudent)) {
+							System.out.println("Student details updated successfully.");
+						} else {
+							System.out.println("Failed to update student details.");
+						}
+					} else {
+						System.out.println("Student not found with the provided ID.");
+					}
+
+					break;
+				}
+				case 5: {
+					/* Get Students */
+					StudentDao studentDao = new StudentDaoImpl();
+					List<Student> students = studentDao.getStudent();
+
+					if (!students.isEmpty()) {
+						System.out.println("List of Students:");
+						for (Student std : students) {
+							System.out.println("ID: " + std.getStudent_id());
+							System.out.println("Name: " + std.getStudent_name());
+							System.out.println("Gender: " + std.getStudent_gender());
+							System.out.println("Email: " + std.getStudent_email());
+							System.out.println("Mobile No.: " + std.getStudent_mobileNo());
+							System.out.println("Age.: " + std.getStudent_age());
+							System.out.println("----------------------");
+						}
+					} else {
+						System.out.println("No students found.");
+					}
+
+					break;
+				}
+
 				default:
 					throw new IllegalArgumentException("Unexpected value: " + option1);
 				}
@@ -132,6 +205,8 @@ public class App {
 				System.out.println("1>. Add Course");
 				System.out.println("2>. Delete Course");
 				System.out.println("3>. Get Course");
+				System.out.println("4>. Update Course");
+				System.out.println("5>. Get Course List");
 				System.out.println("Enter the above choice :");
 				int option2 = sc.nextInt();
 				sc.nextLine();
@@ -199,6 +274,78 @@ public class App {
 						System.out.println("Fees: " + course.getCourse_fees());
 					} else {
 						System.out.println("Course not found with the provided ID.");
+					}
+
+					break;
+				}
+				case 4: {
+					/* Update Course */
+					System.out.print("Enter the course id for updating course details : ");
+					Long c_id = sc.nextLong();
+					sc.nextLine();
+
+					CourseDao obj = new CourseDaoImpl();
+					Course existingCourse = obj.getCourse(c_id);
+
+					if (existingCourse != null) {
+						// Display existing course details
+						System.out.println("Existing Course Details:");
+						System.out.println("ID: " + existingCourse.getCourse_id());
+						System.out.println("Name: " + existingCourse.getCourse_name());
+						System.out.println("Duration: " + existingCourse.getCourse_duration());
+						System.out.println("Trainer: " + existingCourse.getCourse_faculty());
+						System.out.println("Fees: " + existingCourse.getCourse_fees());
+
+						// Take input for updated course details
+						System.out.print("Enter the new course name : ");
+						String newCName = sc.nextLine();
+
+						System.out.print("Enter the new course duration : ");
+						Integer newCDuration = sc.nextInt();
+						sc.nextLine();
+
+						System.out.print("Enter the new trainer name : ");
+						String newCTrainer = sc.nextLine();
+
+						System.out.print("Enter the new trainer fees : ");
+						Double newCFees = sc.nextDouble();
+						sc.nextLine();
+
+						// Update the course details
+						existingCourse.setCourse_name(newCName);
+						existingCourse.setCourse_duration(newCDuration);
+						existingCourse.setCourse_faculty(newCTrainer);
+						existingCourse.setCourse_fees(newCFees);
+
+						// Call the updateCourse method
+						if (obj.updateCourse(existingCourse)) {
+							System.out.println("Course Updated Successfully.");
+						} else {
+							System.out.println("Failed to update the course.");
+						}
+					} else {
+						System.out.println("Course not found with the provided ID.");
+					}
+
+					break;
+				}
+				case 5: {
+					/* Get Courses */
+					CourseDao courseDao = new CourseDaoImpl();
+					List<Course> courses = courseDao.getCourse();
+
+					if (!courses.isEmpty()) {
+						System.out.println("List of Courses:");
+						for (Course course : courses) {
+							System.out.println("ID: " + course.getCourse_id());
+							System.out.println("Name: " + course.getCourse_name());
+							System.out.println("Duration: " + course.getCourse_duration());
+							System.out.println("Trainer: " + course.getCourse_faculty());
+							System.out.println("Fees: " + course.getCourse_fees());
+							System.out.println("----------------------");
+						}
+					} else {
+						System.out.println("No courses found.");
 					}
 
 					break;
