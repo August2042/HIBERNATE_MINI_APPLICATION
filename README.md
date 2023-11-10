@@ -4,11 +4,19 @@ This repository contains a Java application for managing students and courses us
 
 ## Features
 
-- Add, delete, and retrieve student information.
-- Add, delete, and retrieve course information.
+- **Student Management:**
+  - Add, delete, and retrieve student information.
+  - Update student details.
+  - Get a list of all students.
+
+- **Course Management:**
+  - Add, delete, and retrieve course information.
+  - Update course details.
+  - Get a list of all courses.
+
 - Lazy Singleton Hibernate configuration to handle database connections.
 - Database schema is automatically updated.
-- Use of Hibernate for database interaction.
+- Use of Hibernate for efficient database interaction.
 
 ## Getting Started
 
@@ -33,10 +41,15 @@ git clone https://github.com/yourusername/hibernate-management-system.git
   - Add a new student.
   - Delete a student by providing the ID.
   - Retrieve a student by providing the ID.
+  - Update student details.
+  - Get a list of all students.
+
 - For course:
   - Add a new course.
   - Delete a course by providing the ID.
   - Retrieve a course by providing the ID.
+  - Update course details.
+  - Get a list of all courses.
 
 ## Technologies Used
 
